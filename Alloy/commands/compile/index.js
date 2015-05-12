@@ -80,6 +80,10 @@ module.exports = function(args, program) {
 		alloyConfig.deploytype = 'development';
 		logger.debug('deploytype = ' + alloyConfig.deploytype);
 	}
+	if (program.file) {
+		logger.debug('file = ' + program.file);
+		alloyConfig.file = program.file;
+	}
 	logger.debug('project path = ' + paths.project);
 	logger.debug('app path = ' + paths.app);
 	logger.debug('');
@@ -432,8 +436,8 @@ function matchesRestriction(files, fileRestriction) {
 			// to be removed to prevent a compile error
 			delete file.platform;
 			matches |= matchesRestriction(file, fileRestriction);
-		} else {
-			throw 'Unsupported file type: ' + typeof file;
+		} else if(typeof file !== 'boolean') {
+			throw 'unsupported file type ' + typeof file;
 		}
 	});
 
